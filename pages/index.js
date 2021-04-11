@@ -1,65 +1,84 @@
 import Head from 'next/head'
+import Link from 'next/link'
 import styles from '../styles/Home.module.css'
+import {useContext, useState} from "react"
+import {Data} from "../context/Data"
 
 export default function Home() {
+  const data = useContext(Data)
+  const [firstName, setFirstName] = useState("")
+  const [lastName, setLastName] = useState("")
+  const [email, setEmail] = useState("")
+  const [jobs, setJobs] = useState([])
+
+  const handleCheckBox = e =>{
+    if(!jobs.includes(e.target.name)){
+      setJobs([...jobs, e.target.name])
+
+    }else{
+      let newJobs = jobs.filter(x => x!=e.target.name)
+      setJobs(newJobs)
+    }
+  }
+  const handleSubmit = (e)=>{
+    if(jobs.length  <1 || email.length === 0 || lastName.length ===0 ){ 
+      e.stopPropagation()
+    }
+    console.log(firstName,lastName,email, jobs)
+  }
+
   return (
     <div className={styles.container}>
       <Head>
-        <title>Create Next App</title>
+        <title>Employee System App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+      <section className={styles.main}>
+        <h1>Employee System</h1>
+        <hr/>
+        <form>
 
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
+        <label>
+          Name:
+          <input required={true} type="text" value={firstName} onChange={(e)=>setFirstName(e.target.value)}/>
+        </label>
+        <label>
+          Last Name:
+          <input required={true} type="text" value={lastName} onChange={(e)=>setLastName(e.target.value)} />
+        </label>
+        <label>
+          Email:
+          <input required={true} type="text"  value={email} onChange={(e)=>setEmail(e.target.value)}/>
+        </label>
+        <hr/>
+        <p>TEST CHECKBOX</p>
+        {jobs.length && jobs.map((job,i) => <span key={i}>{job} | </span>)}
+        <hr/>
+        <label>
+          Cook:
+          <input type="checkbox" name="cook" onClick={handleCheckBox}/>
+        </label>
+        <label>
+          Server:
+          <input type="checkbox" name="server" onClick={handleCheckBox} />
+        </label>
+        <label>
+          Other:
+          <input type="checkbox" name="other" onClick={handleCheckBox} />
+        </label>
+        <button onClick={handleSubmit}>Apply</button>
+        </form>
+      </section>
+      <section className={styles.listEmployees}>
+        <h3>Appplicants List</h3>
+        <ul>
+          {data.length >0 && data.map(applicant => (
+            <li key={applicant.id}>{applicant.firstName} {applicant.lastName} | {applicant.email} | <Link href={`/applicant/${applicant.id}`}><a>View/Edit</a></Link> </li>
+          ))}
+        </ul>
+      </section>
 
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
     </div>
   )
 }
