@@ -1,19 +1,12 @@
 import {useReducer} from "react"
-import {v4 as uuid} from "uuid"
+// import {v4 as uuid} from "uuid"
 import '../styles/globals.css'
 import {Data, Dispatcher} from "../context/Data"
 import reducer from "../utils/reducer"
-const initial = [
-  {
-    id:uuid(),
-    firstName:"danilo",
-    lastName:"mera",
-    email:"email@example.com",
-    jobs:["cook","server", "other"]
-  }
-]
+import initialData from "../utils/data"
+
 function MyApp({ Component, pageProps }) {
-  const [data, setData] = useReducer(reducer, initial)
+  const [data, setData] = useReducer(reducer, initialData)
   return (
     <Dispatcher.Provider value={setData}>
       <Data.Provider value={data}>

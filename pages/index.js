@@ -2,10 +2,14 @@ import Head from 'next/head'
 import Link from 'next/link'
 import styles from '../styles/Home.module.css'
 import {useContext, useState} from "react"
-import {Data} from "../context/Data"
+import {Data, Dispatcher} from "../context/Data"
+import {v4 as uuid} from "uuid"
+import { useRouter } from 'next/router'
 
 export default function Home() {
+  const router = useRouter()
   const data = useContext(Data)
+  const dispatch = useContext(Dispatcher)
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
   const [email, setEmail] = useState("")
@@ -21,10 +25,14 @@ export default function Home() {
     }
   }
   const handleSubmit = (e)=>{
-    if(jobs.length  <1 || email.length === 0 || lastName.length ===0 ){ 
-      e.stopPropagation()
+    if(jobs.length ===0 || email.length === 0 || lastName.length ===0 ){ 
+      alert("fill application correctly")
+    }else{
+      let id = Math.floor(Math.random() * 99999)
+      dispatch({type:"add", payload:{ id, firstName, lastName, email, jobs}})
+      // console.log(firstName,lastName,email, jobs)
+      router.push(`/applicant/${id}`)
     }
-    console.log(firstName,lastName,email, jobs)
   }
 
   return (
@@ -37,7 +45,7 @@ export default function Home() {
       <section className={styles.main}>
         <h1>Employee System</h1>
         <hr/>
-        <form>
+        <div >
 
         <label>
           Name:
@@ -49,7 +57,7 @@ export default function Home() {
         </label>
         <label>
           Email:
-          <input required={true} type="text"  value={email} onChange={(e)=>setEmail(e.target.value)}/>
+          <input required={true} type="email"  value={email} onChange={(e)=>setEmail(e.target.value)}/>
         </label>
         <hr/>
         <p>TEST CHECKBOX</p>
@@ -67,8 +75,8 @@ export default function Home() {
           Other:
           <input type="checkbox" name="other" onClick={handleCheckBox} />
         </label>
-        <button onClick={handleSubmit}>Apply</button>
-        </form>
+        <button  onClick={handleSubmit}>Apply</button>
+        </div>
       </section>
       <section className={styles.listEmployees}>
         <h3>Appplicants List</h3>
