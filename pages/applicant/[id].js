@@ -1,5 +1,6 @@
 import React, {useContext, useState} from 'react'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router' 
+import Link from "next/link"
 import {Data} from "../../context/Data"
 
 const SingleApplicant = () => {
@@ -22,6 +23,10 @@ const SingleApplicant = () => {
           <p>{lastName}</p>
           <p>{email}</p>
           <p>{jobs.map((job,i) => <span key={i}>job</span> )}</p>
+          <hr/>
+          <Link href="/">
+              <a>Home</a>
+          </Link>
         </div>
     )
 }

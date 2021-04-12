@@ -60,9 +60,7 @@ export default function Home() {
           <input required={true} type="email"  value={email} onChange={(e)=>setEmail(e.target.value)}/>
         </label>
         <hr/>
-        <p>TEST CHECKBOX</p>
-        {jobs.length && jobs.map((job,i) => <span key={i}>{job} | </span>)}
-        <hr/>
+        
         <label>
           Cook:
           <input type="checkbox" name="cook" onClick={handleCheckBox}/>
