@@ -29,7 +29,7 @@ export default function Home() {
       alert("fill application correctly")
     }else{
       let id = Math.floor(Math.random() * 99999)
-      dispatch({type:"add", payload:{ id, firstName, lastName, email, jobs}})
+      dispatch({type:"add", payload:{ id, firstName, lastName, email, jobs,speakRating:"1", readingRating :"1", friendlinessRating:"1"}})
       // console.log(firstName,lastName,email, jobs)
       router.push(`/applicant/${id}`)
     }
